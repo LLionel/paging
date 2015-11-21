@@ -75,15 +75,15 @@
 <center>
 	<br/>
 	第${pb.pc }页/共${pb.tp } &nbsp;
-	<a href = "<c:url value = '/servlet/CustomerServlet?method=findAll' />">首页</a>
+	<a href = "${pb.url }">首页</a>
 	<c:if test = "${pb.pc>1 }">
-		<a href = "<c:url value = '/servlet/CustomerServlet?method=findAll&pc=${pb.pc-1 }'/>">上一页</a>
+		<a href = "${pb.url }&pc=${pb.pc-1}">上一页</a>
 	</c:if>
 	
 	<c:forEach var = "i" begin = "${begin }" end = "${end }">
 		<c:choose>
 			<c:when test="${i!=pb.pc }">
-				<a href = "<c:url value = '/servlet/CustomerServlet?method=findAll&pc=${i }'/>"> [${i }]</a>
+				<a href = "${pb.url }&pc=${i}"> [${i }]</a>
 			</c:when>
 		<c:otherwise>[${i }]</c:otherwise>
 		</c:choose>
@@ -91,9 +91,9 @@
 	</c:forEach>
 	
 	<c:if test = "${pb.pc<pb.tp }">
-		<a href = "<c:url value = '/servlet/CustomerServlet?method=findAll&pc=${pb.pc+1 }'/>">下一页</a>
+		<a href = "${pb.pc+1 }&pc=${pb.pc+1}">下一页</a>
 	</c:if>
-	<a href = "<c:url value = '/servlet/CustomerServlet?method=findAll&pc=${pb.tp}'/>">尾页</a>
+	<a href = "${pb.tp}">尾页</a>
 	
 </center>
   </body>

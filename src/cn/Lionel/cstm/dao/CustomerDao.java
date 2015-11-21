@@ -58,7 +58,7 @@ public class CustomerDao {
 			int tr = num.intValue() ;
 			pb.setTr(tr);
 			
-			sql = "select * from t_customer limit ?,?";
+			sql = "select * from t_customer order by cname limit ?,?";
 			Object[] params = {(pc-1)*ps , ps} ;
 			List<Customer> list = qr.query(sql,
 					new BeanListHandler<Customer>(Customer.class) ,
@@ -105,7 +105,7 @@ public class CustomerDao {
 		}
 		
 	}
-
+/*
 	public List<Customer> query(Customer c) {
 		// TODO Auto-generated method stub
 		
@@ -137,5 +137,62 @@ public class CustomerDao {
 			throw new RuntimeException(e);
 		}
 	}
+	*/
+	
+	public PageBean<Customer> query(Customer c , int pc , int ps) {
+		
+		
+		try {
+			PageBean<Customer> pb = new PageBean<Customer>() ;
+			pb.setPc(pc);
+			pb.setPs(ps);
+			
+			//获取tr
+			StringBuffer cntsql = new StringBuffer("select count(*) from t_customer ") ;
+			StringBuffer whereSql = new StringBuffer("where 1=1 ");
+			List<Object> params = new ArrayList<Object>() ;
+			if(c.getCname() != null && !c.getCname().trim().isEmpty())
+			{
+				whereSql.append("and cname like ? ") ;
+				params.add("%"+c.getCname()+"%");
+			}
+			if(c.getGender() != null && !c.getGender().trim().isEmpty())
+			{
+				whereSql.append("and gender = ? ") ;
+				params.add(c.getGender());
+			}
+			if(c.getCellphone() != null && !c.getCellphone().trim().isEmpty())
+			{
+				whereSql.append("and cellphone like ? ") ;
+				params.add("%"+c.getCellphone()+"%");
+			}
+			if(c.getEmail() != null && !c.getEmail().trim().isEmpty())
+			{
+				whereSql.append("and email like ? ") ;
+				params.add("%"+c.getEmail()+"%");
+			}
+			
+			Number num = (Number) qr.query(cntsql.append(whereSql).toString(), 
+					new ScalarHandler(), 
+					params.toArray()) ;
+			int tr = num.intValue();
+			pb.setTr(tr);
+			
+			//得到beanList
+			StringBuffer sql = new StringBuffer("select * from t_customer ");
+			StringBuffer limitSql = new StringBuffer("limit ?,?");
+			params.add((pc-1)*ps);
+			params.add(ps);
+			List<Customer> list = qr.query(sql.append(whereSql).append(limitSql).toString(), new BeanListHandler<Customer>(Customer.class),params.toArray()) ;
+			
+			pb.setBeanList(list);
+			
+			return pb ;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+		
+	}
+	
 	
 }

@@ -8,8 +8,14 @@ public class PageBean<T> {
 	private int tr ; //total record 总记录数
 	private int ps ; // page size  每页记录数
 	private List<T> beanList ; //当前页的数据
+	private String url ; 
 	
-	
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
+		this.url = url;
+	}
 	public int getPc() {
 		return pc;
 	}

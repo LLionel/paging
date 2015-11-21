@@ -42,9 +42,17 @@ public class CustomerService {
 	public void delete(String cid) {
 		dao.delete(cid);
 	}
-	public List<Customer> query(Customer c) {
+	
+	/*public List<Customer> query(Customer c) {
 
 		return dao.query(c);
 		
+	}*/
+	
+	public PageBean<Customer> query(Customer c , int pc , int ps ) {
+
+		return dao.query(c,pc,ps);
+		
 	}
+	
 }
